@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Search Engine</title>
+        <title>News App</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,7 +29,7 @@
                 <div class="col m-5">
                     <div class="row">
                         <div class="col-md-2">
-                            <h2>Search Engine</h2>
+                            <h2>News App</h2>
                         </div>
                         <div class="col-md-6">
                             <input type="text" class="form-control" id="search_query" name="search_query">
@@ -62,21 +62,31 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        @foreach(session('bookmarks') as $item)
+                        @if(session()->has('bookmarks'))
+                            @foreach(session('bookmarks') as $item)
+                                <div class="col-md-12 p-2">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                        <a href="{{ $item['link'] }}" class="h6">{{ $item['title'] }}</a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <small class="text-body-secondary">{{ $item['link'] }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
+                            @else
                             <div class="col-md-12 p-2">
                                 <div class="row">
                                     <div class="col-md-10">
-                                    <a href="{{ $item['link'] }}" class="h6">{{ $item['title'] }}</a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <small class="text-body-secondary">{{ $item['link'] }}</small>
+                                    <span class="h6">Nothing to see here</span>
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                        @endforeach
+                        @endif
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -110,8 +120,8 @@
             var cnt = 0;
             response.sortedResults.forEach(element => {
                 cnt++;
-                console.log(sessionData.some(item => item.id == element.id));
-                var bookmarked = sessionData.some(item => item.id == element.id) ? 'checked' : '';
+                console.log(sessionData);
+                var bookmarked = sessionData != null ? sessionData.some(item => item.id == element.id) ? 'checked' : '' : '';
                 // data.some(item => item.id === idToFind);
                 content += `
                     <div class="col-md-12 p-3">
